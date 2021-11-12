@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 @Repository
-public class TextIMPL implements TextDAO {
+public class TextIMPL implements TextDAO   {
 
     private final EntityManager entityManager;
 
@@ -48,6 +49,19 @@ public class TextIMPL implements TextDAO {
         Session currentSession = entityManager.unwrap(Session.class);
         Text myText = currentSession.get(Text.class, theId);
         currentSession.delete(myText);
+    }
+
+
+    //Add query for word search
+    @Override
+    @Transactional //Defines the scope of a single database transaction.
+    public List<Text> findBy(String keyWord){
+        Session currentSession = entityManager.unwrap(Session.class);
+        //Query<Text> myQuery = currentSession.createQuery("SELECT t FROM Text t WHERE CONCAT(t.content, ' ', t.artist, ' ', t.category, ' ', t.source) LIKE %?1%");
+        //Query<Text> myQuery = currentSession.createQuery("SELECT t FROM Text t WHERE CONCAT(t.content, ' ', t.artist, ' ', t.category, ' ', t.source) like :kw");
+        Query<Text> myQuery = currentSession.createQuery("from Text where content = :kw");
+        myQuery.setParameter("kw", keyWord);
+        return myQuery.getResultList();
     }
 }
 

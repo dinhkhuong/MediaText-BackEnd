@@ -10,4 +10,7 @@ public interface TextService {
     Object findById(int theId);
     void saveOrUpdate(Text theText);
     void deleteById(int theId);
+
+    //for word search query
+    List<Text> findBy(String keyword);
 }

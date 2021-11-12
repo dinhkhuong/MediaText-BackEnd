@@ -42,4 +42,10 @@ public class TextServiceIMPL implements TextService{
         textDAO.deleteById(textId);
     }
 
+    //For word search query
+    @Override
+    public List<Text> findBy(String keyWord) {
+        return textDAO.findBy(keyWord);
+    }
+
 }

@@ -65,4 +65,10 @@ public class TextController {
     }
 
 
+    //add GET request for text search query
+    //http://localhost:8080/findText/{word}
+    @GetMapping("/findText/{word}")
+    public List<Text> findBy(@PathVariable String word) {
+        return textService.findBy(word);
+    }
 }

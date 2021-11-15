@@ -57,10 +57,22 @@ public class TextIMPL implements TextDAO   {
     @Transactional //Defines the scope of a single database transaction.
     public List<Text> findBy(String keyWord){
         Session currentSession = entityManager.unwrap(Session.class);
-        //Query<Text> myQuery = currentSession.createQuery("SELECT t FROM Text t WHERE CONCAT(t.content, ' ', t.artist, ' ', t.category, ' ', t.source) LIKE %?1%");
-        //Query<Text> myQuery = currentSession.createQuery("SELECT t FROM Text t WHERE CONCAT(t.content, ' ', t.artist, ' ', t.category, ' ', t.source) like :kw");
-        Query<Text> myQuery = currentSession.createQuery("from Text where content = :kw");
+
+//        Query<Text> myQuery = currentSession.createQuery("from Text where content = :kw");
+//        myQuery.setParameter("kw", keyWord);
+
+
+        /*Query<Text> myQuery = currentSession.createQuery("from Text where concat(content, ' ', artist) like :kw");
+        myQuery.setParameter("kw", keyWord);*/// show nothing
+
+
+        /*Query<Text> myQuery = currentSession.createQuery("select a from Text a"
+                + "where a.content LIKE CONCAT('%',?1,'%')");
+        myQuery.setParameter(1, keyWord);*/ // error 500
+
+        Query<Text> myQuery = currentSession.createQuery("from Text where concat(content, ' ', artist, ' ', source) like concat('%',:kw,'%')");
         myQuery.setParameter("kw", keyWord);
+
         return myQuery.getResultList();
     }
 }
